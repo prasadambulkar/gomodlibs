@@ -3,6 +3,7 @@ package gomodlibs
 import (
 	"crypto/rand"
 	"math/big"
+	"os"
 )
 
 const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
@@ -24,4 +25,17 @@ func GenerateRandomString(length int) (string, error) {
 	}
 
 	return string(result), nil
+}
+
+// CreateDirIfNotExists creates a directory if it does not already exist.
+func CreateDirIfNotExists(dirPath string) error {
+	// Check if the directory exists
+	if _, err := os.Stat(dirPath); os.IsNotExist(err) {
+		// Directory does not exist, create it
+		err := os.MkdirAll(dirPath, 0755) // Create parent directories if needed
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }

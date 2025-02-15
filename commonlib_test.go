@@ -1,6 +1,7 @@
 package gomodlibs
 
 import (
+	"os"
 	"testing"
 )
 
@@ -40,5 +41,36 @@ func TestGenerateRandomStringZeroLength(t *testing.T) {
 	}
 	if len(randomStr) != 0 {
 		t.Errorf("Expected empty string, but got: %s", randomStr)
+	}
+}
+
+// TestCreateDirIfNotExists verifies that the function correctly creates a directory when it does not exist.
+func TestCreateDirIfNotExists(t *testing.T) {
+	// Define a test directory name
+	testDir := "testdir"
+
+	// Ensure test cleanup after the test finishes
+	defer os.RemoveAll(testDir) // Deletes the directory after the test
+
+	// Step 1: Check if directory does not exist initially
+	if _, err := os.Stat(testDir); !os.IsNotExist(err) {
+		t.Fatalf("Test directory %s already exists before test", testDir)
+	}
+
+	// Step 2: Call the function to create the directory
+	err := CreateDirIfNotExists(testDir)
+	if err != nil {
+		t.Fatalf("Failed to create directory: %v", err)
+	}
+
+	// Step 3: Verify that the directory was created
+	if _, err := os.Stat(testDir); os.IsNotExist(err) {
+		t.Fatalf("Directory %s was not created", testDir)
+	}
+
+	// Step 4: Call the function again and ensure it does not return an error
+	err = CreateDirIfNotExists(testDir)
+	if err != nil {
+		t.Fatalf("Unexpected error when calling CreateDirIfNotExists on an existing directory: %v", err)
 	}
 }

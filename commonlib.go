@@ -7,6 +7,8 @@ import (
 
 const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 
+// Call Following functions from your app by importing this module.
+
 // GenerateRandomString generates a random string of the given length
 // using characters from the allowed charset.
 
